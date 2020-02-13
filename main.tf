@@ -1,7 +1,8 @@
 #--- test/main.tf ---
 
+# terraform init --backend-config=backend.hcl
+
 provider "aws" {
-  region = var.region
   profile = "default"
 }
 
@@ -20,7 +21,7 @@ resource "aws_s3_bucket" "s3_bucket_tfstate" {
   # prevent accidental deletion of this bucket
   # (if you really have to destroy this bucket, change this value to false and reapply)
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 
   # enable versioning so we can see the full revision history of our state file
