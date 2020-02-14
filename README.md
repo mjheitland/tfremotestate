@@ -7,10 +7,11 @@ Features:
 +	Share Terraform state in an S3 bucket as a remote backend
 +	Use a different bucket key for every module
 +	Use versioning on S3 bucket: 
-  versioning { enabled = true }
+  `versioning { enabled = true }`
 +	Prevent accidental deletion of the state bucket: 
-  lifecycle { prevent_destroy = true }
+  `lifecycle { prevent_destroy = true }`
 +	Bucket must be encrypted in transit and in rest as the state file is containing secrets
+  ```
   versioning { enabled = true }
   server_side_encryption_configuration {
     rule {
@@ -19,9 +20,10 @@ Features:
       }
     }
   }
+  ```
 +	Use partial configuration for the backend:
 place variables (bucket, region, dynamotable, encrypt) into a separate file “backend.hcl”,
 leave only the key in TF: 
-  terraform { backend s3 { key = “mymodule/terraform.tfstate” } } 
+  `terraform { backend s3 { key = “mymodule/terraform.tfstate” } }`
 and run 
-  terraform init -backend-configuration=backend.hcl”
+  `terraform init -backend-configuration=backend.hcl”`
