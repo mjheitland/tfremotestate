@@ -23,9 +23,9 @@ Features:
     }
   }
   ```
-+	Use partial configuration for the backend:
++	Use partial configuration for code using the backend (e.g. for 1_test):
 place variables (bucket, region, dynamotable, encrypt) into a separate file “backend.hcl”,
 leave only the key in terraform provider in main.tf: 
   `terraform { backend s3 { key = “mymodule/terraform.tfstate” } }`
 and run 
-  `terraform init -backend-configuration="../backend.hcl”`
+  `terraform init -backend-config=../backend.hcl`
