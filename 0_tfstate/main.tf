@@ -6,17 +6,12 @@ provider "aws" {
   profile = "default"
 }
 
-# to use S3 bucket and DynamoDB table to store Terraform's remote state:
-/*
-terraform {
-  backend "s3" {
-    key = "mymodule/terraform.tfstate"
-  }
-}
-*/
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
 
 resource "aws_s3_bucket" "s3_bucket_tfstate" {
-  bucket = "mjh-tfstate"
+  bucket = "tfstate-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
 
   # prevent accidental deletion of this bucket
   # (if you really have to destroy this bucket, change this value to false and reapply)
@@ -37,20 +32,14 @@ resource "aws_s3_bucket" "s3_bucket_tfstate" {
       }
     }
   }
-  tags = { 
-    project_name = var.project_name
-  }
 }
 
-resource "aws_dynamodb_table" "dynamodb_table_tfstatelocks" {
-  name = "tfstatelocks"
+resource "aws_dynamodb_table" "dynamodb_table_tfstate" {
+  name = "tfstate-${data.aws_region.current.name}"
   billing_mode = "PAY_PER_REQUEST"
   hash_key = "LockID"
   attribute {
     name = "LockID"
     type = "S"
-  }
-  tags = { 
-    project_name = var.project_name
   }
 }

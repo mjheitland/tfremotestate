@@ -1,7 +1,7 @@
-#--- test/config.tf ---
+#--- config.tf ---
 
 terraform {
-  required_version = ">= 0.12.20"
+  required_version = ">= 0.12"
   required_providers {
     aws = ">= 2.48.0"
   }

@@ -1,6 +1,8 @@
 ## Store Terraform state remotely 
-(one bucket and one DynamoDB table per account storing all of your TF code):
+One encrypted bucket and one DynamoDB table per account storing all of your TF code
 
+Convention:
++ bucket_name = tfstate-<account_id>-<>
 Features:
 +	Isolate state files with workspaces (dev and testing) or file layout (production)
 +	Lock concurrent Terraform changes with DynamoDB table locks
@@ -23,7 +25,7 @@ Features:
   ```
 +	Use partial configuration for the backend:
 place variables (bucket, region, dynamotable, encrypt) into a separate file “backend.hcl”,
-leave only the key in TF: 
+leave only the key in terraform provider in main.tf: 
   `terraform { backend s3 { key = “mymodule/terraform.tfstate” } }`
 and run 
-  `terraform init -backend-configuration=backend.hcl”`
+  `terraform init -backend-configuration="../backend.hcl”`
